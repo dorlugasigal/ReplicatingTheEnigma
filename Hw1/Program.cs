@@ -12,9 +12,13 @@ namespace Hw1
     {
         public static Plugboard m_pg;
         public static Reflector m_rf;
+        public static List<Rotor> m_rtList;
+        public enum Components
+        {
+            Reflector, Plugboard, Rotor
+        }
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Dor Lugasi home work #1 solution.");
             while (true)
             {
                 Menu();
@@ -24,11 +28,14 @@ namespace Hw1
         static void Menu()
         {
             Console.Clear();
+            Console.WriteLine("Welcome to Dor Lugasi home work #1 solution.");
+            Console.WriteLine();
             Console.WriteLine("1. Initialize");
             if (m_pg != null && m_rf != null)
             {
                 Console.WriteLine("2. Test Plugboard");
                 Console.WriteLine("3. Test Reflector");
+                Console.WriteLine("4. Test Rotor");
             }
             Console.WriteLine("0. Exit");
             var x = Console.ReadKey();
@@ -50,14 +57,22 @@ namespace Hw1
                 case ConsoleKey.NumPad2:
                     if (m_pg != null && m_rf != null)
                     {
-                        TestPlugboard();
+                        Test(Components.Plugboard);
                     }
                     break;
                 case ConsoleKey.D3:
                 case ConsoleKey.NumPad3:
                     if (m_pg != null && m_rf != null)
                     {
-                        TestReflector();
+
+                        Test(Components.Reflector);
+                    }
+                    break;
+                case ConsoleKey.D4:
+                case ConsoleKey.NumPad4:
+                    if (m_rtList != null && m_rtList.Count > 0)
+                    {
+                        Test(Components.Rotor);
                     }
                     break;
                 default:
@@ -78,7 +93,7 @@ namespace Hw1
             do
             {
                 Console.Write("==> ");
-                conString = Console.ReadLine();
+                conString = Console.ReadLine().ToUpper();
                 if (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})([ ][A-Z]{2})*$"))
                 {
                     Console.WriteLine("Plugboard configuration string should look like 'XX YY ZZ' etc");
@@ -97,47 +112,70 @@ namespace Hw1
             m_rf = new Reflector();
             Console.WriteLine("Created successfully");
 
+            m_rtList = new List<Rotor>();
+            Rotor rt1 = new Rotor(1, 1, Helper.Direction.Forward, "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
+            Rotor rt2 = new Rotor(1, 1, Helper.Direction.Forward, "AJDKSIRUXBLHWTMCQGZNPYFVOE");
+            Rotor rt3 = new Rotor(1, 1, Helper.Direction.Forward, "BDFHJLCPRTXVZNYEIWGAKMUSQO");
+            Rotor rt4 = new Rotor(1, 1, Helper.Direction.Forward, "ESOVPZJAYQUIRHXLNFTGKDCMWB");
+            Rotor rt5 = new Rotor(26, 5, Helper.Direction.Reverse, "VZBRGITYUPSDNHLXAWMJQOFECK");
+
+            m_rtList.Add(rt1);
+            m_rtList.Add(rt2);
+            m_rtList.Add(rt3);
+            m_rtList.Add(rt4);
+            m_rtList.Add(rt5);
+
             Console.WriteLine("Reflector and Plugboard succesfully configured");
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
         }
 
-        private static void TestPlugboard()
+
+
+        private static void Test(Components comp)
         {
             Console.Clear();
-            Console.WriteLine("Insert a Text to test the Plugboard");
+            string rotorNumber = string.Empty;
+            if (comp == Components.Rotor)
+            {
+                Console.WriteLine("Which Rotor would you like to test? (1-5)");
+                do
+                {
+                    Console.Write("==> ");
+                    rotorNumber = Console.ReadLine().ToUpper();
+                    if (!Regex.IsMatch(rotorNumber, @"^[1-5]+$"))
+                    {
+                        Console.WriteLine("please enter a number between 1-5");
+                    }
+
+                } while (!Regex.IsMatch(rotorNumber, @"^[1-5]+$"));
+            }
+            Console.WriteLine("Insert a letter to test the " + comp.ToString());
             string TestString;
             do
             {
                 Console.Write("==> ");
-                TestString = Console.ReadLine();
-                if (!Regex.IsMatch(TestString, @"^[a-zA-Z\s]+$"))
+                TestString = Console.ReadLine().ToUpper();
+                if (!Regex.IsMatch(TestString, @"^[a-zA-Z]{1}$"))
                 {
                     Console.WriteLine("please use english letters only");
                 }
 
-            } while (!Regex.IsMatch(TestString, @"^[a-zA-Z\s]+$"));
-
-            Console.WriteLine("Answer==> " + m_pg.LetterIndexConverter(TestString));
-            Console.WriteLine("Press any key to go back to menu");
-            Console.ReadKey();
-        }
-        private static void TestReflector()
-        {
-            Console.Clear();
-            Console.WriteLine("Insert a text to test the Reflector");
-            string TestString;
-            do
+            } while (!Regex.IsMatch(TestString, @"^[a-zA-Z]{1}$"));
+            string ans = string.Empty;
+            switch (comp)
             {
-                Console.Write("==> ");
-                TestString = Console.ReadLine();
-                if (!Regex.IsMatch(TestString, @"^[a-zA-Z\s]+$"))
-                {
-                    Console.WriteLine("please use english letters only");
-                }
-
-            } while (!Regex.IsMatch(TestString, @"^[a-zA-Z\s]+$"));
-            Console.WriteLine("Answer==> " + m_rf.LetterIndexConverter(TestString));
+                case Components.Reflector:
+                    ans = m_rf.LetterIndexConverter(TestString);
+                    break;
+                case Components.Plugboard:
+                    ans = m_pg.LetterIndexConverter(TestString);
+                    break;
+                case Components.Rotor:
+                    ans = m_rtList[int.Parse(rotorNumber)-1].LetterIndexConverter(TestString);
+                    break;
+            }
+            Console.WriteLine("Answer==> " + ans);
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
         }

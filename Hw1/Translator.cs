@@ -8,10 +8,12 @@ namespace Hw1
 {
     class Translator : Substitutor
     {
+
         public Translator() : base()
         {
 
         }
+
         public override string ForwardTranslation()
         {
             throw new NotImplementedException();

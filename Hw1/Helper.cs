@@ -9,5 +9,11 @@ namespace Hw1
     public static class Helper
     {
         public static string ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        public enum Direction
+        {
+            Forward,
+            Reverse
+        }
     }
 }

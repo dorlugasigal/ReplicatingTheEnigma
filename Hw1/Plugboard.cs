@@ -33,5 +33,5 @@ namespace Hw1
             var result = new string(givenMessage.Select(c => (m_configuration.Keys.Contains(c) ? m_configuration[c] : c )).ToArray());
             return result.ToString();       
         }
-    }
 }
+    }

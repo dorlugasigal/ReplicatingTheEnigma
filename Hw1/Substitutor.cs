@@ -15,6 +15,7 @@ namespace Hw1
         }
         public void CircularShift()
         {
+
         }
 
         public abstract string ForwardTranslation();
