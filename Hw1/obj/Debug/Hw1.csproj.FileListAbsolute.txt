@@ -5,3 +5,10 @@ C:\Projects\Hw1\Hw1\obj\Debug\Hw1.csprojAssemblyReference.cache
 C:\Projects\Hw1\Hw1\obj\Debug\Hw1.csproj.CoreCompileInputs.cache
 C:\Projects\Hw1\Hw1\obj\Debug\Hw1.exe
 C:\Projects\Hw1\Hw1\obj\Debug\Hw1.pdb
+C:\Dor\replicatingtheenigma\Hw1\bin\Debug\Hw1.exe.config
+C:\Dor\replicatingtheenigma\Hw1\bin\Debug\Hw1.exe
+C:\Dor\replicatingtheenigma\Hw1\bin\Debug\Hw1.pdb
+C:\Dor\replicatingtheenigma\Hw1\obj\Debug\Hw1.csprojAssemblyReference.cache
+C:\Dor\replicatingtheenigma\Hw1\obj\Debug\Hw1.csproj.CoreCompileInputs.cache
+C:\Dor\replicatingtheenigma\Hw1\obj\Debug\Hw1.exe
+C:\Dor\replicatingtheenigma\Hw1\obj\Debug\Hw1.pdb

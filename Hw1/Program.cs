@@ -79,14 +79,15 @@ namespace Hw1
             {
                 Console.Write("==> ");
                 conString = Console.ReadLine();
-                if (!Regex.IsMatch(conString, @"^[a-zA-Z\s]+$"))
+                if (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})([ ][A-Z]{2})*$"))
                 {
                     Console.WriteLine("Plugboard configuration string should look like 'XX YY ZZ' etc");
                     Console.WriteLine("no more than 10 couples");
+                    Console.WriteLine("and a letter cannot appear twice.");
                     Console.WriteLine("please use english letters only");
                 }
 
-            } while (!Regex.IsMatch(conString, @"^[a-zA-Z\s]+$"));
+            } while (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})([ ][A-Z]{2})*$"));
 
             Console.WriteLine("Creating a new Plugboard");
             m_pg = new Plugboard(conString.Trim(new char[] { ' ', ',', '.', '\\', '/' }));
