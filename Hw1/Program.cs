@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static Hw1.Helper;
 
 namespace Hw1
 {
@@ -31,54 +32,59 @@ namespace Hw1
             Console.WriteLine("Welcome to Dor Lugasi home work #1 solution.");
             Console.WriteLine();
             Console.WriteLine("1. Initialize");
-            if (m_pg != null && m_rf != null)
+            if (m_pg != null && m_rf != null && m_rtList != null)
             {
                 Console.WriteLine("2. Test Plugboard");
                 Console.WriteLine("3. Test Reflector");
                 Console.WriteLine("4. Test Rotor");
+                Console.WriteLine("5. Run the Enigma");
             }
             Console.WriteLine("0. Exit");
-            var x = Console.ReadKey();
-            switch (x.Key)
+            switch (Helper.ReadKey())
             {
 
-                case ConsoleKey.D0:
-                case ConsoleKey.NumPad0:
+                case 0:
                     Console.Clear();
                     Console.WriteLine("Thank you! good bye");
                     Environment.Exit(0);
                     break;
-                case ConsoleKey.D1:
-                case ConsoleKey.NumPad1:
-
+                case 1:
                     Initizalize();
                     break;
-                case ConsoleKey.D2:
-                case ConsoleKey.NumPad2:
+                case 2:
                     if (m_pg != null && m_rf != null)
                     {
                         Test(Components.Plugboard);
                     }
                     break;
-                case ConsoleKey.D3:
-                case ConsoleKey.NumPad3:
+                case 3:
                     if (m_pg != null && m_rf != null)
                     {
-
                         Test(Components.Reflector);
                     }
                     break;
-                case ConsoleKey.D4:
-                case ConsoleKey.NumPad4:
+                case 4:
                     if (m_rtList != null && m_rtList.Count > 0)
                     {
                         Test(Components.Rotor);
+                    }
+                    break;
+                case 5:
+                    if (m_rtList != null && m_rtList.Count > 0)
+                    {
+                        StartEnigma();
                     }
                     break;
                 default:
                     Initizalize();
                     break;
             }
+        }
+
+        private static void StartEnigma()
+        {
+            Enigma enigma = new Enigma(m_rtList, m_rf, m_pg);
+            enigma.Start();
         }
 
         public static void Initizalize()
@@ -90,46 +96,88 @@ namespace Hw1
             Console.WriteLine("Plugboard configuration string should look like 'XX YY ZZ' etc");
             Console.WriteLine("no more than 10 couples");
             string conString;
+            string[] configurationCouples = null;
             do
             {
                 Console.Write("==> ");
-                conString = Console.ReadLine().ToUpper();
-                if (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})([ ][A-Z]{2})*$"))
+                conString = Console.ReadLine();
+                conString = conString.ToUpper();
+                if (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})*([ ][A-Z]{2})*$"))
                 {
                     Console.WriteLine("Plugboard configuration string should look like 'XX YY ZZ' etc");
                     Console.WriteLine("no more than 10 couples");
                     Console.WriteLine("and a letter cannot appear twice.");
                     Console.WriteLine("please use english letters only");
                 }
+                else
+                {
+                    configurationCouples = conString.Trim(new char[] { ' ', ',', '.', '\\', '/', ';' }).Split(' ');
+                    if (configurationCouples != null && configurationCouples.Length > 10)
+                    {
+                        Console.WriteLine("Too much arguments inserted to configuration string");
+                        Console.WriteLine("Insert no more than 10 couples");
+                    }
+                }
 
-            } while (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})([ ][A-Z]{2})*$"));
+            } while (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})*([ ][A-Z]{2})*$") || (configurationCouples != null && configurationCouples.Length > 10));
 
-            Console.WriteLine("Creating a new Plugboard");
-            m_pg = new Plugboard(conString.Trim(new char[] { ' ', ',', '.', '\\', '/' }));
-            Console.WriteLine("Created successfully");
+            m_pg = new Plugboard(configurationCouples);
+            string extraMessage = conString.Length > 0 ? (" with these couples: " + conString) : string.Empty;
+            Console.WriteLine("Plugboard Created successfully " + extraMessage);
 
-            Console.WriteLine("Creating a new Reflector");
             m_rf = new Reflector();
-            Console.WriteLine("Created successfully");
+            Console.WriteLine("Reflector Created successfully");
 
             m_rtList = new List<Rotor>();
-            Rotor rt1 = new Rotor(1, 1, Helper.Direction.Forward, "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
-            Rotor rt2 = new Rotor(1, 1, Helper.Direction.Forward, "AJDKSIRUXBLHWTMCQGZNPYFVOE");
-            Rotor rt3 = new Rotor(1, 1, Helper.Direction.Forward, "BDFHJLCPRTXVZNYEIWGAKMUSQO");
-            Rotor rt4 = new Rotor(1, 1, Helper.Direction.Forward, "ESOVPZJAYQUIRHXLNFTGKDCMWB");
-            Rotor rt5 = new Rotor(26, 5, Helper.Direction.Reverse, "VZBRGITYUPSDNHLXAWMJQOFECK");
+            for (int i = 1; i < 6; i++)
+            {
+                m_rtList.Add(CreateRotor(i));
+            }
+            Console.WriteLine("───────────────────────────────────────────────────────────────────────");
 
-            m_rtList.Add(rt1);
-            m_rtList.Add(rt2);
-            m_rtList.Add(rt3);
-            m_rtList.Add(rt4);
-            m_rtList.Add(rt5);
-
-            Console.WriteLine("Reflector and Plugboard succesfully configured");
+            Console.WriteLine("Reflector, Plugboard and all the rotors successfully configured");
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
         }
 
+        public static Rotor CreateRotor(int rotorNum)
+        {
+            Console.WriteLine("───────────────────────────────────────────────────────────────────────");
+
+            Console.WriteLine();
+
+            Console.WriteLine("Enter Settings for Rotor " + rotorNum + ":");
+            int RotorSettings = Helper.ReadLetter("Settings");
+            Console.WriteLine("Enter Initial-Offset for Rotor " + rotorNum + ":");
+            int RotorOffset = Helper.ReadLetter("Initial Offset");
+
+            string permutation;
+            switch (rotorNum)
+            {
+                case 1:
+                    permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+                    break;
+                case 2:
+                    permutation = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+                    break;
+                case 3:
+                    permutation = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+                    break;
+                case 4:
+                    permutation = "ESOVPZJAYQUIRHXLNFTGKDCMWB";
+                    break;
+                case 5:
+                    permutation = "VZBRGITYUPSDNHLXAWMJQOFECK";
+                    break;
+                default:
+                    permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+                    break;
+            }
+            Rotor rt = new Rotor(RotorOffset, RotorSettings, Helper.Direction.Forward, permutation, rotorNum);
+            Console.WriteLine("Rotor " + rotorNum + " Created successfully");
+            Console.WriteLine();
+            return rt;
+        }
 
 
         private static void Test(Components comp)
@@ -166,18 +214,32 @@ namespace Hw1
             switch (comp)
             {
                 case Components.Reflector:
-                    ans = m_rf.LetterIndexConverter(TestString);
+                    ans = m_rf.TranslateLetter(TestString, null);
                     break;
                 case Components.Plugboard:
-                    ans = m_pg.LetterIndexConverter(TestString);
+                    ans = m_pg.TranslateLetter(TestString, null);
                     break;
                 case Components.Rotor:
-                    ans = m_rtList[int.Parse(rotorNumber)-1].LetterIndexConverter(TestString);
+                    Console.WriteLine("1. Test Forward Permutation");
+                    Console.WriteLine("2. Test Reverse Permutation");
+                    switch (Helper.ReadKey())
+                    {
+                        case 1:
+                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
+                            break;
+                        case 2:
+                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Reverse);
+                            break;
+                        default:
+                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
+                            break;
+                    }
                     break;
             }
             Console.WriteLine("Answer==> " + ans);
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
         }
+
     }
 }
