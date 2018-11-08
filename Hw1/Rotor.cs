@@ -10,16 +10,18 @@ namespace Hw1
     class Rotor : ITranslator
     {
         int m_ID;
+        int m_notch;
         int m_ringOffset;
         int m_ringSettings;
         string m_permutation;
         string m_reversePermutation;
         Direction m_rotorDirection;
-        
+        Rotor m_next;
 
-        public Rotor(int offset, int settings, Direction dir, string permutation,int number)
+        public Rotor(int offset, int settings, Direction dir, string permutation,int number,int notch)
         {
             m_ID = number;
+            m_notch = notch;
             m_ringOffset = offset;
             m_rotorDirection = dir;
             m_ringSettings = settings;
@@ -38,10 +40,19 @@ namespace Hw1
             return (x % 26 + 26) % 26;
         }
 
+        public void SetNextRotor(Rotor rt)
+        {
+            m_next = rt;
+        }
+
         public string ForwardTranslation(string givenLetter)
         {
             string ret = Helper.ABC[mod(Helper.ABC.IndexOf(m_permutation[mod(Helper.ABC.IndexOf(givenLetter[0]) + m_ringOffset - m_ringSettings)]) - m_ringOffset + m_ringSettings)].ToString();
             return ret;
+        }
+        public bool isNotch()
+        {
+            return m_ringOffset == m_notch;
         }
 
         public string ReverseTranslation(string givenLetter)
@@ -69,7 +80,7 @@ namespace Hw1
         }
         public override string ToString()
         {
-            return "Rotor " + m_ID + ": Permutation: " + m_permutation + ",   Reverse Permutation: " + m_reversePermutation;
+            return "Rotor " + m_ID + ": Permutation: " + m_permutation + ", Settings: " + Helper.ABC[m_ringSettings]+ ", Initial Offset: " + Helper.ABC[m_ringOffset];
         }
         public int GetID()
         {

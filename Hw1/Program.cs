@@ -152,28 +152,34 @@ namespace Hw1
             int RotorOffset = Helper.ReadLetter("Initial Offset");
 
             string permutation;
+            int notch = -1;
             switch (rotorNum)
             {
                 case 1:
                     permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+                    notch = 16;
                     break;
                 case 2:
                     permutation = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+                    notch = 4;
                     break;
                 case 3:
                     permutation = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+                    notch = 21;
                     break;
                 case 4:
                     permutation = "ESOVPZJAYQUIRHXLNFTGKDCMWB";
+                    notch = 9;
                     break;
                 case 5:
                     permutation = "VZBRGITYUPSDNHLXAWMJQOFECK";
+                    notch = 25;
                     break;
                 default:
                     permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
                     break;
             }
-            Rotor rt = new Rotor(RotorOffset, RotorSettings, Helper.Direction.Forward, permutation, rotorNum);
+            Rotor rt = new Rotor(RotorOffset, RotorSettings, Helper.Direction.Forward, permutation, rotorNum, notch);
             Console.WriteLine("Rotor " + rotorNum + " Created successfully");
             Console.WriteLine();
             return rt;

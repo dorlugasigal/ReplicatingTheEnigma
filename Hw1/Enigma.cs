@@ -81,6 +81,10 @@ namespace Hw1
 
             } while (m_rotorList.Count != 3);
             m_rotorList.AddRange(tempList.ToArray());
+            m_rotorList[0].SetNextRotor(m_rotorList[1]);
+            m_rotorList[1].SetNextRotor(m_rotorList[2]);
+
+
             Console.WriteLine("The Enigma successfully configured with the following rotors:");
             Console.WriteLine("Right  Rotor: " + m_rotorList[0].ToString());
             Console.WriteLine("Middle Rotor: " + m_rotorList[1].ToString());
@@ -94,16 +98,42 @@ namespace Hw1
             Console.WriteLine("Enter a word to Encrypt: ");
             var x = Console.ReadLine();
             x = x.ToUpper();
-            var a = m_plugboard.TranslateLetter(x[0].ToString(), Helper.Direction.Forward);
-            var b = m_rotorList[0].TranslateLetter(a, Helper.Direction.Forward);
-            var c = m_rotorList[1].TranslateLetter(b, Helper.Direction.Forward);
-            var d = m_rotorList[2].TranslateLetter(c, Helper.Direction.Forward);
-            var e = m_reflector.TranslateLetter(d, Helper.Direction.Forward);
-            var f = m_rotorList[2].TranslateLetter(e, Helper.Direction.Reverse);
-            var g = m_rotorList[1].TranslateLetter(f, Helper.Direction.Reverse);
-            var h = m_rotorList[0].TranslateLetter(g.ToString(), Helper.Direction.Reverse);
-            var i = m_plugboard.TranslateLetter(h.ToString(), Helper.Direction.Reverse);
-            Console.WriteLine(i);
+            for (int character = 0; character < x.Length; character++)
+            {
+
+                if (m_rotorList[0].isNotch() || m_rotorList[1].isNotch())
+                {
+                    if (m_rotorList[1].isNotch())
+                    {
+                        m_rotorList[2].OffsetIncrement();
+                    }
+                    m_rotorList[1].OffsetIncrement();
+                }
+                m_rotorList[0].OffsetIncrement();
+                var a = m_plugboard.TranslateLetter(x.ElementAt(character).ToString(), Helper.Direction.Forward);
+                var b = m_rotorList[0].TranslateLetter(a, Helper.Direction.Forward);
+                var c = m_rotorList[1].TranslateLetter(b, Helper.Direction.Forward);
+                var d = m_rotorList[2].TranslateLetter(c, Helper.Direction.Forward);
+                var e = m_reflector.TranslateLetter(d, Helper.Direction.Forward);
+                var f = m_rotorList[2].TranslateLetter(e, Helper.Direction.Reverse);
+                var g = m_rotorList[1].TranslateLetter(f, Helper.Direction.Reverse);
+                var h = m_rotorList[0].TranslateLetter(g.ToString(), Helper.Direction.Reverse);
+                var i = m_plugboard.TranslateLetter(h.ToString(), Helper.Direction.Reverse);
+
+                //Console.WriteLine("m_plugboard.TranslateLetter(" + x[0].ToString() + ", Helper.Direction.Forward):     " + a);
+                //Console.WriteLine("m_rotorList[0].TranslateLetter(" + a + ", Helper.Direction.Forward):   " + b);
+                //Console.WriteLine("m_rotorList[1].TranslateLetter(" + b + ", Helper.Direction.Forward):    " + c);
+                //Console.WriteLine("m_rotorList[2].TranslateLetter(" + c + ", Helper.Direction.Forward):     " + d);
+                //Console.WriteLine("m_reflector.TranslateLetter(" + d + ", Helper.Direction.Forward):         " + e);
+                //Console.WriteLine("m_rotorList[2].TranslateLetter(" + e + ", Helper.Direction.Reverse):       " + f);
+                //Console.WriteLine("m_rotorList[1].TranslateLetter(" + f + ", Helper.Direction.Reverse):        " + g);
+                //Console.WriteLine("m_rotorList[0].TranslateLetter(" + g + ", Helper.Direction.Reverse):         " + h);
+                //Console.WriteLine("m_plugboard.TranslateLetter(" + h + ".ToString(), Helper.Direction.Reverse);  " + i);
+
+
+                Console.Write(i);
+            }
+            Console.WriteLine();
             Console.WriteLine("The Enigma Worked thank you good bye");
             Environment.Exit(0);
 
