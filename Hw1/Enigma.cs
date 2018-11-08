@@ -98,6 +98,7 @@ namespace Hw1
             Console.WriteLine("Enter a word to Encrypt: ");
             var x = Console.ReadLine();
             x = x.ToUpper();
+            Console.Write("==>  ");
             for (int character = 0; character < x.Length; character++)
             {
 
@@ -134,9 +135,8 @@ namespace Hw1
                 Console.Write(i);
             }
             Console.WriteLine();
-            Console.WriteLine("The Enigma Worked thank you good bye");
-            Environment.Exit(0);
-
+            Console.WriteLine("Press any key to go back to menu");
+            Console.ReadKey();
         }
     }
 }
