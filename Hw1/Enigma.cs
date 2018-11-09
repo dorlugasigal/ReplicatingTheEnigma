@@ -101,7 +101,10 @@ namespace Hw1
             Console.Write("==>  ");
             for (int character = 0; character < x.Length; character++)
             {
-
+                if(x.ElementAt(character)==' ')
+                {
+                    Console.Write(' ');
+                }
                 if (m_rotorList[0].isNotch() || m_rotorList[1].isNotch())
                 {
                     if (m_rotorList[1].isNotch())
@@ -130,7 +133,6 @@ namespace Hw1
                 //Console.WriteLine("m_rotorList[1].TranslateLetter(" + f + ", Helper.Direction.Reverse):        " + g);
                 //Console.WriteLine("m_rotorList[0].TranslateLetter(" + g + ", Helper.Direction.Reverse):         " + h);
                 //Console.WriteLine("m_plugboard.TranslateLetter(" + h + ".ToString(), Helper.Direction.Reverse);  " + i);
-
 
                 Console.Write(i);
             }
