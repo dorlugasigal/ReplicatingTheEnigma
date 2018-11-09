@@ -14,15 +14,26 @@ namespace Hw1
 
         public Enigma(List<Rotor> rotorList, Reflector reflector, Plugboard plugboard)
         {
-            Console.Clear();
+            if (rotorList.Count != 3)
+            {
+                Console.Clear();
+            }
             int num;
             m_reflector = reflector;
             m_plugboard = plugboard;
             m_rotorList = new List<Rotor>();
+            if (rotorList.Count == 3)//task 5
+            {
+                m_rotorList.Add(rotorList[0]);
+                m_rotorList.Add(rotorList[1]);
+                m_rotorList.Add(rotorList[2]);
+                m_rotorList[0].SetNextRotor(m_rotorList[1]);
+                m_rotorList[1].SetNextRotor(m_rotorList[2]);
+                return;
+            }
             List<int> chosed = new List<int>();
             List<Rotor> tempList = new List<Rotor>();
             tempList.AddRange(rotorList.ToList());
-
             Console.WriteLine("Initializing the Enigma, please choose 3 rotors you would like to use:");
             do
             {
@@ -93,17 +104,39 @@ namespace Hw1
             Console.ReadKey();
         }
 
-        internal void Start()
+        internal string Start(int t5)
         {
-            Console.WriteLine("Enter a word to Encrypt: ");
-            var x = Console.ReadLine();
-            x = x.ToUpper();
+            string x;
+            StringBuilder answer = new StringBuilder();
+            if (t5 == 0)
+            {
+                Console.WriteLine("Enter a word to Encrypt: ");
+                x = Console.ReadLine();
+                x = x.ToUpper();
+            }
+            else
+            {
+                if (t5 == 1)
+                {
+                    x = "MLD";
+                }
+                else
+                {
+                    x = "UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ";
+                }
+            }
             Console.Write("==>  ");
             for (int character = 0; character < x.Length; character++)
             {
-                if(x.ElementAt(character)==' ')
+                if (x.ElementAt(character) == ' ')
                 {
-                    Console.Write(' ');
+                    answer.Append(' ');
+                    continue;
+                }
+                if (x.ElementAt(character) == '\n')
+                {
+                    answer.Append('\n');
+                    continue;
                 }
                 if (m_rotorList[0].isNotch() || m_rotorList[1].isNotch())
                 {
@@ -133,12 +166,17 @@ namespace Hw1
                 //Console.WriteLine("m_rotorList[1].TranslateLetter(" + f + ", Helper.Direction.Reverse):        " + g);
                 //Console.WriteLine("m_rotorList[0].TranslateLetter(" + g + ", Helper.Direction.Reverse):         " + h);
                 //Console.WriteLine("m_plugboard.TranslateLetter(" + h + ".ToString(), Helper.Direction.Reverse);  " + i);
-
-                Console.Write(i);
+                answer.Append(i);
+                //Console.Write(i);
             }
-            Console.WriteLine();
-            Console.WriteLine("Press any key to go back to menu");
-            Console.ReadKey();
+            if (t5 == 0)
+            {
+                Console.WriteLine(answer);
+                Console.WriteLine();
+                Console.WriteLine("Press any key to go back to menu");
+                Console.ReadKey();
+            }
+            return answer.ToString();
         }
     }
 }

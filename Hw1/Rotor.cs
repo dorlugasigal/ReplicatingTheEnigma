@@ -15,15 +15,13 @@ namespace Hw1
         int m_ringSettings;
         string m_permutation;
         string m_reversePermutation;
-        Direction m_rotorDirection;
         Rotor m_next;
 
-        public Rotor(int offset, int settings, Direction dir, string permutation,int number,int notch)
+        public Rotor(int offset, int settings, string permutation, int number, int notch)
         {
             m_ID = number;
             m_notch = notch;
             m_ringOffset = offset;
-            m_rotorDirection = dir;
             m_ringSettings = settings;
 
             m_permutation = permutation;
@@ -63,7 +61,15 @@ namespace Hw1
 
         public void OffsetIncrement()
         {
-            m_ringOffset++;
+            if (m_ringOffset == 25)
+            {
+                m_ringOffset = 0;
+            }
+            else
+            {
+                m_ringOffset++;
+            }
+
         }
 
         public string TranslateLetter(string givenMessage, Direction? dir)
@@ -80,7 +86,7 @@ namespace Hw1
         }
         public override string ToString()
         {
-            return "Rotor " + m_ID + ": Permutation: " + m_permutation + ", Settings: " + Helper.ABC[m_ringSettings]+ ", Initial Offset: " + Helper.ABC[m_ringOffset];
+            return "Rotor " + m_ID + ": Permutation: " + m_permutation + ", Settings: " + Helper.ABC[m_ringSettings] + ", Initial Offset: " + Helper.ABC[m_ringOffset];
         }
         public int GetID()
         {

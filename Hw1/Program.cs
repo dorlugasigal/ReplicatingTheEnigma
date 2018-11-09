@@ -18,6 +18,14 @@ namespace Hw1
         {
             Reflector, Plugboard, Rotor
         }
+        public enum RotorsPermutation
+        {
+            EKMFLGDQVZNTOWYHXUSPAIBRCJ = 1,
+            AJDKSIRUXBLHWTMCQGZNPYFVOE,
+            BDFHJLCPRTXVZNYEIWGAKMUSQO,
+            ESOVPZJAYQUIRHXLNFTGKDCMWB,
+            VZBRGITYUPSDNHLXAWMJQOFECK
+        }
         static void Main(string[] args)
         {
             while (true)
@@ -39,6 +47,11 @@ namespace Hw1
                 Console.WriteLine("4. Test Rotor");
                 Console.WriteLine("5. Run the Enigma");
             }
+            else
+            {
+                Console.WriteLine("----INITIALIZE TO GET 2,3,4,5----");
+            }
+            Console.WriteLine("6. Task 5");
             Console.WriteLine("0. Exit");
             switch (Helper.ReadKey())
             {
@@ -56,17 +69,30 @@ namespace Hw1
                     {
                         Test(Components.Plugboard);
                     }
+                    else
+                    {
+                        Console.WriteLine("Plugboard is not initialized yet");
+                    }
                     break;
                 case 3:
                     if (m_pg != null && m_rf != null)
                     {
                         Test(Components.Reflector);
                     }
+                    else
+                    {
+                        Console.WriteLine("Reflectors is not initialized yet");
+                    }
+
                     break;
                 case 4:
                     if (m_rtList != null && m_rtList.Count > 0)
                     {
                         Test(Components.Rotor);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Rotors are not initalized yet");
                     }
                     break;
                 case 5:
@@ -75,16 +101,87 @@ namespace Hw1
                         StartEnigma();
                     }
                     break;
+                case 6:
+                    Task5();
+                    break;
+
                 default:
                     Initizalize();
                     break;
             }
         }
 
+        private static void Task5()
+        {
+            Reflector t6_reflector;
+            Plugboard t6_plugboard;
+            List<Rotor> t6_rotorList;
+            Enigma t5_enigma;
+            Console.WriteLine("In this section i will explain how to solve task 5:");
+            Console.WriteLine("Press any key to start");
+            Helper.ReadKey();
+            Console.Clear();
+            Console.WriteLine("--INCOMING MESSAGE--");
+            Thread.Sleep(400);
+            Console.Clear();
+            Thread.Sleep(100);
+            Console.WriteLine("--INCOMING MESSAGE--");
+            Thread.Sleep(400);
+            Console.Clear();
+            Thread.Sleep(100);
+            Console.WriteLine("--INCOMING MESSAGE--");
+            Thread.Sleep(400);
+            Console.Clear();
+            string message = "CON MLD \nRNYHP UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ";
+            for (int i = 0; i < message.Length; i++)
+            {
+                Console.Write(message.ElementAt(i));
+                Thread.Sleep(30);
+            }
+            Console.WriteLine("Press a key to analyse");
+            Console.WriteLine("Step 1:");
+            Console.WriteLine("Initialize a Reflector of type B");
+            t6_reflector = new Reflector();
+            Console.WriteLine("Step 2:");
+            Console.WriteLine("Initialize a Plugboard with 29th October's Settings: ZU HL CQ WM OA PY EB TR DN VI");
+            t6_plugboard = new Plugboard("ZU HL CQ WM OA PY EB TR DN VI".Split(' '));
+            Console.WriteLine("Step 3:");
+            Console.WriteLine("Initialize Rotors 2-5-4  with C-O-N as starting offset and Setting to S-I-X");
+            t6_rotorList = new List<Rotor>();
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("N"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
+            Console.WriteLine("Created Rotor 4 with Settings X and initial offset N");
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
+            Console.WriteLine("Created Rotor 5 with Settings I and initial offset O");
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("C"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
+            Console.WriteLine("Created Rotor 2 with Settings S and initial offset C");
+
+            Console.WriteLine("all components are ready");
+            Console.WriteLine("Initialize the enigma, with the reflector, the plugboard and the rotors we've created");
+            t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
+            Console.WriteLine("Enigma Created successfully, now lets decrypt MLD to get the proper key.");
+            Console.WriteLine("Answer for MLD ===> " + t5_enigma.Start(1));
+            Thread.Sleep(1000);
+            Console.WriteLine("So now we use the answer D-O-R as the initial offset, and we create a new enigma with these rotors.");
+            t6_rotorList = new List<Rotor>();
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("R"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
+            Console.WriteLine("Created Rotor 4 with Settings X and initial offset R");
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
+            Console.WriteLine("Created Rotor 5 with Settings I and initial offset O");
+            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("D"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
+            Console.WriteLine("Created Rotor 2 with Settings S and initial offset D");
+            t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
+            Console.WriteLine("Now, our enigma is ready.lets decrypt the message! but skip the CON MLD words, and the RNYHP..");
+
+            Console.WriteLine("Answer ===> " + t5_enigma.Start(2));
+            Thread.Sleep(1000);
+
+            Helper.ReadKey();
+        }
+
         private static void StartEnigma()
         {
             Enigma enigma = new Enigma(m_rtList, m_rf, m_pg);
-            enigma.Start();
+            enigma.Start(0);
         }
 
         public static void Initizalize()
@@ -102,6 +199,7 @@ namespace Hw1
                 Console.Write("==> ");
                 conString = Console.ReadLine();
                 conString = conString.ToUpper();
+                conString = conString.Trim(new char[] { ' ', ',', '.', '\\', '/', ';' });
                 if (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})*([ ][A-Z]{2})*$"))
                 {
                     Console.WriteLine("Plugboard configuration string should look like 'XX YY ZZ' etc");
@@ -111,7 +209,7 @@ namespace Hw1
                 }
                 else
                 {
-                    configurationCouples = conString.Trim(new char[] { ' ', ',', '.', '\\', '/', ';' }).Split(' ');
+                    configurationCouples = conString.Split(' ');
                     if (configurationCouples != null && configurationCouples.Length > 10)
                     {
                         Console.WriteLine("Too much arguments inserted to configuration string");
@@ -156,35 +254,34 @@ namespace Hw1
             switch (rotorNum)
             {
                 case 1:
-                    permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+                    permutation = ((RotorsPermutation)1).ToString();
                     notch = 16;
                     break;
                 case 2:
-                    permutation = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+                    permutation = ((RotorsPermutation)2).ToString();
                     notch = 4;
                     break;
                 case 3:
-                    permutation = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+                    permutation = ((RotorsPermutation)3).ToString();
                     notch = 21;
                     break;
                 case 4:
-                    permutation = "ESOVPZJAYQUIRHXLNFTGKDCMWB";
+                    permutation = ((RotorsPermutation)4).ToString();
                     notch = 9;
                     break;
                 case 5:
-                    permutation = "VZBRGITYUPSDNHLXAWMJQOFECK";
+                    permutation = ((RotorsPermutation)5).ToString();
                     notch = 25;
                     break;
                 default:
-                    permutation = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+                    permutation = ((RotorsPermutation)1).ToString();
                     break;
             }
-            Rotor rt = new Rotor(RotorOffset, RotorSettings, Helper.Direction.Forward, permutation, rotorNum, notch);
+            Rotor rt = new Rotor(RotorOffset, RotorSettings, permutation, rotorNum, notch);
             Console.WriteLine("Rotor " + rotorNum + " Created successfully");
             Console.WriteLine();
             return rt;
         }
-
 
         private static void Test(Components comp)
         {
