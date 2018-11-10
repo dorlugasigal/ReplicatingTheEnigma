@@ -111,14 +111,24 @@ namespace Hw1
             }
         }
 
+        public static void TypeWriterEffect(string message)
+        {
+            for (int i = 0; i < message.Length; i++)
+            {
+                Console.Write(message[i]);
+                Thread.Sleep(20);
+            }
+            Console.WriteLine();
+        }
+
         private static void Task5()
         {
             Reflector t6_reflector;
             Plugboard t6_plugboard;
             List<Rotor> t6_rotorList;
             Enigma t5_enigma;
-            Console.WriteLine("In this section i will explain how to solve task 5:");
-            Console.WriteLine("Press any key to start");
+            TypeWriterEffect("In this section i will explain how to solve task 5:");
+            TypeWriterEffect("Press any key to start");
             Helper.ReadKey();
             Console.Clear();
             Console.WriteLine("--INCOMING MESSAGE--");
@@ -132,49 +142,83 @@ namespace Hw1
             Console.WriteLine("--INCOMING MESSAGE--");
             Thread.Sleep(400);
             Console.Clear();
-            string message = "CON MLD \nRNYHP UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ";
-            for (int i = 0; i < message.Length; i++)
-            {
-                Console.Write(message.ElementAt(i));
-                Thread.Sleep(30);
-            }
-            Console.WriteLine("Press a key to analyse");
-            Console.WriteLine("Step 1:");
-            Console.WriteLine("Initialize a Reflector of type B");
+            TypeWriterEffect("CON MLD \nRNYHP UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ");
+            TypeWriterEffect("Press a key to analyse");
+            Helper.ReadKey();
+            Console.WriteLine();
+            TypeWriterEffect("Step 1:");
+            Thread.Sleep(500);
+            TypeWriterEffect("Initialize a Reflector of type B");
             t6_reflector = new Reflector();
-            Console.WriteLine("Step 2:");
-            Console.WriteLine("Initialize a Plugboard with 29th October's Settings: ZU HL CQ WM OA PY EB TR DN VI");
+            Thread.Sleep(500);
+            Console.WriteLine();
+            TypeWriterEffect("Step 2:");
+            Thread.Sleep(500);
+            TypeWriterEffect("Initialize a Plugboard with 29th October's Settings: ZU HL CQ WM OA PY EB TR DN VI");
+            Thread.Sleep(500);
+
             t6_plugboard = new Plugboard("ZU HL CQ WM OA PY EB TR DN VI".Split(' '));
-            Console.WriteLine("Step 3:");
-            Console.WriteLine("Initialize Rotors 2-5-4  with C-O-N as starting offset and Setting to S-I-X");
+            Console.WriteLine();
+            TypeWriterEffect("Step 3:");
+            Thread.Sleep(500);
+            TypeWriterEffect("Initialize Rotors 2-5-4  with C-O-N as starting offset and Setting to S-I-X");
+            Thread.Sleep(500);
+
             t6_rotorList = new List<Rotor>();
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("N"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
-            Console.WriteLine("Created Rotor 4 with Settings X and initial offset N");
+            TypeWriterEffect("Created Rotor 4 with Settings X and initial offset N");
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
-            Console.WriteLine("Created Rotor 5 with Settings I and initial offset O");
+            TypeWriterEffect("Created Rotor 5 with Settings I and initial offset O");
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("C"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
-            Console.WriteLine("Created Rotor 2 with Settings S and initial offset C");
+            TypeWriterEffect("Created Rotor 2 with Settings S and initial offset C");
+            Thread.Sleep(500);
 
-            Console.WriteLine("all components are ready");
-            Console.WriteLine("Initialize the enigma, with the reflector, the plugboard and the rotors we've created");
+            TypeWriterEffect("all components are ready!");
+            Thread.Sleep(500);
+            Console.WriteLine();
+            TypeWriterEffect("Step 4:");
+            Thread.Sleep(500);
+            TypeWriterEffect("Initialize the enigma, with the reflector, the plugboard and the rotors we've created");
             t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
-            Console.WriteLine("Enigma Created successfully, now lets decrypt MLD to get the proper key.");
-            Console.WriteLine("Answer for MLD ===> " + t5_enigma.Start(1));
-            Thread.Sleep(1000);
-            Console.WriteLine("So now we use the answer D-O-R as the initial offset, and we create a new enigma with these rotors.");
+
+            Thread.Sleep(500);
+            TypeWriterEffect("Enigma Created successfully!");
+
+            Thread.Sleep(500);
+            Console.WriteLine();
+            TypeWriterEffect("Step 5:");
+            Thread.Sleep(500);
+            TypeWriterEffect("now lets decrypt MLD to get the proper key.");
+
+            TypeWriterEffect("Answer for MLD ===> " + t5_enigma.Start(1));
+            Thread.Sleep(500);
+            TypeWriterEffect("So now we use the answer D-O-R as the initial offset, and we create a new enigma with these rotors.");
+            Thread.Sleep(500);
             t6_rotorList = new List<Rotor>();
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("R"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
-            Console.WriteLine("Created Rotor 4 with Settings X and initial offset R");
+            TypeWriterEffect("Created Rotor 4 with Settings X and initial offset R");
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
-            Console.WriteLine("Created Rotor 5 with Settings I and initial offset O");
+            TypeWriterEffect("Created Rotor 5 with Settings I and initial offset O");
             t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("D"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
-            Console.WriteLine("Created Rotor 2 with Settings S and initial offset D");
+            TypeWriterEffect("Created Rotor 2 with Settings S and initial offset D");
             t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
-            Console.WriteLine("Now, our enigma is ready.lets decrypt the message! but skip the CON MLD words, and the RNYHP..");
+            Thread.Sleep(500);
 
-            Console.WriteLine("Answer ===> " + t5_enigma.Start(2));
-            Thread.Sleep(1000);
+            Console.WriteLine();
+            TypeWriterEffect("Step 6:");
+            TypeWriterEffect("Now, our enigma is ready.\nlets decrypt the message! but skip the CON MLD words, and the RNYHP..");
 
+            TypeWriterEffect("Answer ===> \n" + t5_enigma.Start(2));
+            Thread.Sleep(500);
+            Console.WriteLine();
+            TypeWriterEffect("Step 7:");
+            Thread.Sleep(500);
+            TypeWriterEffect("Write it down with the proper identation and spaces");
+            TypeWriterEffect("GROUP SOUTH COMMAND FROM GEN PAULUS X\nSIXTH ARMY IS ENCIRCLED X\nOPERATION BLAU FAILED X\nCOMMENCE RELIEF OPERATION IMMEDIATELY");
+
+            Console.WriteLine();
+            Thread.Sleep(500);
+            TypeWriterEffect("Thats it!\npress any key to go back to menu");
             Helper.ReadKey();
         }
 
