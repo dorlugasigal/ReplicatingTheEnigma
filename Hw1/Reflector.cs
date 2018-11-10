@@ -19,7 +19,7 @@ namespace Hw1
         public string TranslateLetter(string givenMessage,Direction ? dir)
         {
             givenMessage.ToUpper();        
-            var result = new string(givenMessage.Select(c => m_configuration[Helper.ABC.IndexOf(c)]).ToArray());
+            var result = new string(givenMessage.Select(c => m_configuration[Helper.LetterToIndexConverter(c)]).ToArray());
             return result.ToString();
         }
     }

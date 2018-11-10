@@ -11,9 +11,10 @@ namespace Hw1
 {
     class Program
     {
-        public static Plugboard m_pg;
-        public static Reflector m_rf;
-        public static List<Rotor> m_rtList;
+        #region Properties and Enum
+        public static Plugboard m_plugboard;
+        public static Reflector m_reflector;
+        public static List<Rotor> m_rotorsList;
         public enum Components
         {
             Reflector, Plugboard, Rotor
@@ -26,6 +27,9 @@ namespace Hw1
             ESOVPZJAYQUIRHXLNFTGKDCMWB,
             VZBRGITYUPSDNHLXAWMJQOFECK
         }
+
+        #endregion
+
         static void Main(string[] args)
         {
             while (true)
@@ -40,7 +44,7 @@ namespace Hw1
             Console.WriteLine("Welcome to Dor Lugasi home work #1 solution.");
             Console.WriteLine();
             Console.WriteLine("1. Initialize");
-            if (m_pg != null && m_rf != null && m_rtList != null)
+            if (m_plugboard != null && m_reflector != null && m_rotorsList != null)
             {
                 Console.WriteLine("2. Test Plugboard");
                 Console.WriteLine("3. Test Reflector");
@@ -65,7 +69,7 @@ namespace Hw1
                     Initizalize();
                     break;
                 case 2:
-                    if (m_pg != null && m_rf != null)
+                    if (m_plugboard != null && m_reflector != null)
                     {
                         Test(Components.Plugboard);
                     }
@@ -75,7 +79,7 @@ namespace Hw1
                     }
                     break;
                 case 3:
-                    if (m_pg != null && m_rf != null)
+                    if (m_plugboard != null && m_reflector != null)
                     {
                         Test(Components.Reflector);
                     }
@@ -86,7 +90,7 @@ namespace Hw1
 
                     break;
                 case 4:
-                    if (m_rtList != null && m_rtList.Count > 0)
+                    if (m_rotorsList != null && m_rotorsList.Count > 0)
                     {
                         Test(Components.Rotor);
                     }
@@ -96,7 +100,7 @@ namespace Hw1
                     }
                     break;
                 case 5:
-                    if (m_rtList != null && m_rtList.Count > 0)
+                    if (m_rotorsList != null && m_rotorsList.Count > 0)
                     {
                         StartEnigma();
                     }
@@ -111,21 +115,13 @@ namespace Hw1
             }
         }
 
-        public static void TypeWriterEffect(string message)
-        {
-            for (int i = 0; i < message.Length; i++)
-            {
-                Console.Write(message[i]);
-                Thread.Sleep(20);
-            }
-            Console.WriteLine();
-        }
+        #region Task 5
 
         private static void Task5()
         {
-            Reflector t6_reflector;
-            Plugboard t6_plugboard;
-            List<Rotor> t6_rotorList;
+            Reflector t5_reflector;
+            Plugboard t5_plugboard;
+            List<Rotor> t5_rotorList;
             Enigma t5_enigma;
             TypeWriterEffect("In this section i will explain how to solve task 5:");
             TypeWriterEffect("Press any key to start");
@@ -149,7 +145,7 @@ namespace Hw1
             TypeWriterEffect("Step 1:");
             Thread.Sleep(500);
             TypeWriterEffect("Initialize a Reflector of type B");
-            t6_reflector = new Reflector();
+            t5_reflector = new Reflector();
             Thread.Sleep(500);
             Console.WriteLine();
             TypeWriterEffect("Step 2:");
@@ -157,19 +153,19 @@ namespace Hw1
             TypeWriterEffect("Initialize a Plugboard with 29th October's Settings: ZU HL CQ WM OA PY EB TR DN VI");
             Thread.Sleep(500);
 
-            t6_plugboard = new Plugboard("ZU HL CQ WM OA PY EB TR DN VI".Split(' '));
+            t5_plugboard = new Plugboard("ZU HL CQ WM OA PY EB TR DN VI".Split(' '));
             Console.WriteLine();
             TypeWriterEffect("Step 3:");
             Thread.Sleep(500);
             TypeWriterEffect("Initialize Rotors 2-5-4  with C-O-N as starting offset and Setting to S-I-X");
             Thread.Sleep(500);
 
-            t6_rotorList = new List<Rotor>();
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("N"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
+            t5_rotorList = new List<Rotor>();
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('N'), Helper.LetterToIndexConverter('X'), ((RotorsPermutation)4).ToString(), 4, 9));
             TypeWriterEffect("Created Rotor 4 with Settings X and initial offset N");
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('O'), Helper.LetterToIndexConverter('I'), ((RotorsPermutation)5).ToString(), 5, 25));
             TypeWriterEffect("Created Rotor 5 with Settings I and initial offset O");
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("C"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('C'), Helper.LetterToIndexConverter('S'), ((RotorsPermutation)2).ToString(), 2, 4));
             TypeWriterEffect("Created Rotor 2 with Settings S and initial offset C");
             Thread.Sleep(500);
 
@@ -179,7 +175,7 @@ namespace Hw1
             TypeWriterEffect("Step 4:");
             Thread.Sleep(500);
             TypeWriterEffect("Initialize the enigma, with the reflector, the plugboard and the rotors we've created");
-            t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
+            t5_enigma = new Enigma(t5_rotorList, t5_reflector, t5_plugboard);
 
             Thread.Sleep(500);
             TypeWriterEffect("Enigma Created successfully!");
@@ -194,14 +190,14 @@ namespace Hw1
             Thread.Sleep(500);
             TypeWriterEffect("So now we use the answer D-O-R as the initial offset, and we create a new enigma with these rotors.");
             Thread.Sleep(500);
-            t6_rotorList = new List<Rotor>();
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("R"), Helper.LetterToIndexConverter("X"), ((RotorsPermutation)4).ToString(), 4, 9));
+            t5_rotorList = new List<Rotor>();
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('R'), Helper.LetterToIndexConverter('X'), ((RotorsPermutation)4).ToString(), 4, 9));
             TypeWriterEffect("Created Rotor 4 with Settings X and initial offset R");
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("O"), Helper.LetterToIndexConverter("I"), ((RotorsPermutation)5).ToString(), 5, 25));
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('O'), Helper.LetterToIndexConverter('I'), ((RotorsPermutation)5).ToString(), 5, 25));
             TypeWriterEffect("Created Rotor 5 with Settings I and initial offset O");
-            t6_rotorList.Add(new Rotor(Helper.LetterToIndexConverter("D"), Helper.LetterToIndexConverter("S"), ((RotorsPermutation)2).ToString(), 2, 4));
+            t5_rotorList.Add(new Rotor(Helper.LetterToIndexConverter('D'), Helper.LetterToIndexConverter('S'), ((RotorsPermutation)2).ToString(), 2, 4));
             TypeWriterEffect("Created Rotor 2 with Settings S and initial offset D");
-            t5_enigma = new Enigma(t6_rotorList, t6_reflector, t6_plugboard);
+            t5_enigma = new Enigma(t5_rotorList, t5_reflector, t5_plugboard);
             Thread.Sleep(500);
 
             Console.WriteLine();
@@ -222,13 +218,10 @@ namespace Hw1
             Helper.ReadKey();
         }
 
-        private static void StartEnigma()
-        {
-            Enigma enigma = new Enigma(m_rtList, m_rf, m_pg);
-            enigma.Start(0);
-        }
+        #endregion
+        #region Initialization
 
-        public static void Initizalize()
+        private static void Initizalize()
         {
             Console.Clear();
             Console.WriteLine("Initializing..." + Environment.NewLine);
@@ -263,17 +256,17 @@ namespace Hw1
 
             } while (!Regex.IsMatch(conString, @"^(?!.*?([A-Z]).*\1)([A-Z]{2})*([ ][A-Z]{2})*$") || (configurationCouples != null && configurationCouples.Length > 10));
 
-            m_pg = new Plugboard(configurationCouples);
+            m_plugboard = new Plugboard(configurationCouples);
             string extraMessage = conString.Length > 0 ? (" with these couples: " + conString) : string.Empty;
-            Console.WriteLine("Plugboard Created successfully " + extraMessage);
+            Console.WriteLine("Plugboard Created successfully" + extraMessage);
 
-            m_rf = new Reflector();
+            m_reflector = new Reflector();
             Console.WriteLine("Reflector Created successfully");
 
-            m_rtList = new List<Rotor>();
+            m_rotorsList = new List<Rotor>();
             for (int i = 1; i < 6; i++)
             {
-                m_rtList.Add(CreateRotor(i));
+                m_rotorsList.Add(CreateRotor(i));
             }
             Console.WriteLine("───────────────────────────────────────────────────────────────────────");
 
@@ -281,8 +274,7 @@ namespace Hw1
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
         }
-
-        public static Rotor CreateRotor(int rotorNum)
+        private static Rotor CreateRotor(int rotorNum)
         {
             Console.WriteLine("───────────────────────────────────────────────────────────────────────");
 
@@ -325,7 +317,9 @@ namespace Hw1
             Console.WriteLine("Rotor " + rotorNum + " Created successfully");
             Console.WriteLine();
             return rt;
-        }
+        } 
+
+        #endregion
 
         private static void Test(Components comp)
         {
@@ -361,10 +355,10 @@ namespace Hw1
             switch (comp)
             {
                 case Components.Reflector:
-                    ans = m_rf.TranslateLetter(TestString, null);
+                    ans = m_reflector.TranslateLetter(TestString, null);
                     break;
                 case Components.Plugboard:
-                    ans = m_pg.TranslateLetter(TestString, null);
+                    ans = m_plugboard.TranslateLetter(TestString, null);
                     break;
                 case Components.Rotor:
                     Console.WriteLine("1. Test Forward Permutation");
@@ -372,13 +366,13 @@ namespace Hw1
                     switch (Helper.ReadKey())
                     {
                         case 1:
-                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
+                            ans = m_rotorsList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
                             break;
                         case 2:
-                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Reverse);
+                            ans = m_rotorsList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Reverse);
                             break;
                         default:
-                            ans = m_rtList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
+                            ans = m_rotorsList[int.Parse(rotorNumber) - 1].TranslateLetter(TestString, Direction.Forward);
                             break;
                     }
                     break;
@@ -386,6 +380,12 @@ namespace Hw1
             Console.WriteLine("Answer==> " + ans);
             Console.WriteLine("Press any key to go back to menu");
             Console.ReadKey();
+        }
+
+        private static void StartEnigma()
+        {
+            Enigma enigma = new Enigma(m_rotorsList, m_reflector, m_plugboard);
+            enigma.Start(0);
         }
 
     }

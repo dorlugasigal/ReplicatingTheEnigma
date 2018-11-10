@@ -8,40 +8,44 @@ namespace Hw1
 {
     class Enigma
     {
-        List<Rotor> m_rotorList;
-        Reflector m_reflector;
-        Plugboard m_plugboard;
+        #region Properties
+        private List<Rotor> m_rotorsList;
+        private Reflector m_reflector;
+        private Plugboard m_plugboard; 
+        #endregion
 
-        public Enigma(List<Rotor> rotorList, Reflector reflector, Plugboard plugboard)
+        public Enigma(List<Rotor> rotorsList, Reflector reflector, Plugboard plugboard)
         {
-            if (rotorList.Count != 3)
+            if (rotorsList.Count != 3)
             {
                 Console.Clear();
             }
             int num;
             m_reflector = reflector;
             m_plugboard = plugboard;
-            m_rotorList = new List<Rotor>();
-            if (rotorList.Count == 3)//task 5
+            m_rotorsList = new List<Rotor>();
+
+            if (rotorsList.Count == 3)//task 5
             {
-                m_rotorList.Add(rotorList[0]);
-                m_rotorList.Add(rotorList[1]);
-                m_rotorList.Add(rotorList[2]);
-                m_rotorList[0].SetNextRotor(m_rotorList[1]);
-                m_rotorList[1].SetNextRotor(m_rotorList[2]);
+                m_rotorsList.Add(rotorsList[0]);
+                m_rotorsList.Add(rotorsList[1]);
+                m_rotorsList.Add(rotorsList[2]);
+                //m_rotorList[0].SetNextRotor(m_rotorList[1]);
+                //m_rotorList[1].SetNextRotor(m_rotorList[2]);
                 return;
             }
-            List<int> chosed = new List<int>();
+
+            List<int> choosed = new List<int>();
             List<Rotor> tempList = new List<Rotor>();
-            tempList.AddRange(rotorList.ToList());
+            tempList.AddRange(rotorsList.ToList());
             Console.WriteLine("Initializing the Enigma, please choose 3 rotors you would like to use:");
             do
             {
                 if (tempList.Count > 0)
                 {
-                    Console.WriteLine("Rotors you choosed: " + String.Join(" , ", chosed.ToArray()));
+                    Console.WriteLine("Rotors you choosed: " + String.Join(" , ", choosed.ToArray()));
                 }
-                switch (m_rotorList.Count)
+                switch (m_rotorsList.Count)
                 {
                     case 0:
                         Console.WriteLine("Choose the right-most rotor");
@@ -64,7 +68,7 @@ namespace Hw1
                 if (num > 0 && num <= tempList.Count)
                 {
                     int rotorID = tempList[num - 1].GetID();
-                    if (chosed.Contains(rotorID))
+                    if (choosed.Contains(rotorID))
                     {
                         Console.Clear();
 
@@ -78,8 +82,8 @@ namespace Hw1
                     else
                     {
                         Console.Clear();
-                        chosed.Add(num);
-                        m_rotorList.Add(tempList[num - 1]);
+                        choosed.Add(num);
+                        m_rotorsList.Add(tempList[num - 1]);
                         tempList.Remove(tempList[num - 1]);
                     }
 
@@ -90,31 +94,45 @@ namespace Hw1
                     Console.WriteLine("Wrong input, select the number of the row");
                 }
 
-            } while (m_rotorList.Count != 3);
-            m_rotorList.AddRange(tempList.ToArray());
-            m_rotorList[0].SetNextRotor(m_rotorList[1]);
-            m_rotorList[1].SetNextRotor(m_rotorList[2]);
+            } while (m_rotorsList.Count != 3);
+            m_rotorsList.AddRange(tempList.ToArray());
+            //m_rotorList[0].SetNextRotor(m_rotorList[1]);
+            //m_rotorList[1].SetNextRotor(m_rotorList[2]);
 
 
             Console.WriteLine("The Enigma successfully configured with the following rotors:");
-            Console.WriteLine("Right  Rotor: " + m_rotorList[0].ToString());
-            Console.WriteLine("Middle Rotor: " + m_rotorList[1].ToString());
-            Console.WriteLine("Left   Rotor: " + m_rotorList[2].ToString());
+            Console.WriteLine("Right  Rotor: " + m_rotorsList[0].ToString());
+            Console.WriteLine("Middle Rotor: " + m_rotorsList[1].ToString());
+            Console.WriteLine("Left   Rotor: " + m_rotorsList[2].ToString());
             Console.WriteLine("Press any key to start the machine");
             Console.ReadKey();
         }
 
-        internal string Start(int t5)
+        private void OffsetHandler()
+        {
+            if (m_rotorsList[0].isNotch() || m_rotorsList[1].isNotch())
+            {
+                if (m_rotorsList[1].isNotch())
+                {
+                    m_rotorsList[2].OffsetIncrement();
+                }
+                m_rotorsList[1].OffsetIncrement();
+            }
+            m_rotorsList[0].OffsetIncrement();
+
+        }
+
+        public string Start(int t5)
         {
             string x;
             StringBuilder answer = new StringBuilder();
-            if (t5 == 0)
+            if (t5 == 0)// not task 5
             {
                 Console.WriteLine("Enter a word to Encrypt: ");
                 x = Console.ReadLine();
                 x = x.ToUpper();
             }
-            else
+            else //task 5
             {
                 if (t5 == 1)
                 {
@@ -138,25 +156,19 @@ namespace Hw1
                     answer.Append('\n');
                     continue;
                 }
-                if (m_rotorList[0].isNotch() || m_rotorList[1].isNotch())
-                {
-                    if (m_rotorList[1].isNotch())
-                    {
-                        m_rotorList[2].OffsetIncrement();
-                    }
-                    m_rotorList[1].OffsetIncrement();
-                }
-                m_rotorList[0].OffsetIncrement();
+                OffsetHandler();
+
                 var a = m_plugboard.TranslateLetter(x.ElementAt(character).ToString(), Helper.Direction.Forward);
-                var b = m_rotorList[0].TranslateLetter(a, Helper.Direction.Forward);
-                var c = m_rotorList[1].TranslateLetter(b, Helper.Direction.Forward);
-                var d = m_rotorList[2].TranslateLetter(c, Helper.Direction.Forward);
+                var b = m_rotorsList[0].TranslateLetter(a, Helper.Direction.Forward);
+                var c = m_rotorsList[1].TranslateLetter(b, Helper.Direction.Forward);
+                var d = m_rotorsList[2].TranslateLetter(c, Helper.Direction.Forward);
                 var e = m_reflector.TranslateLetter(d, Helper.Direction.Forward);
-                var f = m_rotorList[2].TranslateLetter(e, Helper.Direction.Reverse);
-                var g = m_rotorList[1].TranslateLetter(f, Helper.Direction.Reverse);
-                var h = m_rotorList[0].TranslateLetter(g.ToString(), Helper.Direction.Reverse);
+                var f = m_rotorsList[2].TranslateLetter(e, Helper.Direction.Reverse);
+                var g = m_rotorsList[1].TranslateLetter(f, Helper.Direction.Reverse);
+                var h = m_rotorsList[0].TranslateLetter(g.ToString(), Helper.Direction.Reverse);
                 var i = m_plugboard.TranslateLetter(h.ToString(), Helper.Direction.Reverse);
 
+                //for testing
                 //Console.WriteLine("m_plugboard.TranslateLetter(" + x[0].ToString() + ", Helper.Direction.Forward):     " + a);
                 //Console.WriteLine("m_rotorList[0].TranslateLetter(" + a + ", Helper.Direction.Forward):   " + b);
                 //Console.WriteLine("m_rotorList[1].TranslateLetter(" + b + ", Helper.Direction.Forward):    " + c);
@@ -167,9 +179,8 @@ namespace Hw1
                 //Console.WriteLine("m_rotorList[0].TranslateLetter(" + g + ", Helper.Direction.Reverse):         " + h);
                 //Console.WriteLine("m_plugboard.TranslateLetter(" + h + ".ToString(), Helper.Direction.Reverse);  " + i);
                 answer.Append(i);
-                //Console.Write(i);
             }
-            if (t5 == 0)
+            if (t5 == 0) //task 5
             {
                 Console.WriteLine(answer);
                 Console.WriteLine();

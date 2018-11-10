@@ -3,23 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hw1
 {
     public static class Helper
     {
-        public static string ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+        #region Properties and Singelton Getters for ABC and indexing
         public enum Direction
         {
             Forward,
             Reverse
         }
-        public static int LetterToIndexConverter(string letter)
+        private static string ABCD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private static Dictionary<int, char> ABC_Dictionary;
+        public static Dictionary<int, char> getABC //singelton ABC
         {
-            return ABC.IndexOf(letter.ToUpper());
+            get
+            {
+                if (ABC_Dictionary == null)
+                {
+                    ABC_Dictionary = new Dictionary<int, char>();
+                    for (int i = 0; i < ABCD.Length; i++)
+                    {
+                        ABC_Dictionary.Add(i, ABCD[i]);
+                    }
+                }
+                return ABC_Dictionary;
+            }
         }
+        private static Dictionary<char, int> ABCIndex_Dictionary;
+        public static Dictionary<char, int> getABCIndex
+        {
+            /*
+                because the letters and the index are unique and you insist that:
+                "there should be no routine use of string search operations ",
+                i made two dictionaries that you can use table lookups instead of "IndexOf".
+                although with string length like this (26), the time (and space) complexity is the same.
+            */
+            get
+            {
+                if (ABCIndex_Dictionary == null)
+                {
+                    ABCIndex_Dictionary = new Dictionary<char, int>();
+                    for (int i = 0; i < ABCD.Length; i++)
+                    {
+                        ABCIndex_Dictionary.Add(ABCD[i], i);
+                    }
+                }
+                return ABCIndex_Dictionary;
+            }
+        }
+        public static int LetterToIndexConverter(char letter)
+        {
+            return getABCIndex[letter];
+        }
+        public static char IndexToLetterConverter(int index)
+        {
+            return getABC[index];
+            //return ABC.IndexOf(letter.ToUpper()); 
+        }
+
+        #endregion
+
+        #region Read from keyboard
+
         public static int ReadLetter(string objective)
         {
             while (true)
@@ -38,7 +87,7 @@ namespace Hw1
                 }
                 else
                 {
-                    return LetterToIndexConverter(read);
+                    return LetterToIndexConverter(read[0]);
                 }
             }
         }
@@ -83,5 +132,25 @@ namespace Hw1
                     return -1;
             }
         }
+
+        #endregion
+
+        #region ETC
+
+        public static void TypeWriterEffect(string message)
+        {
+            for (int i = 0; i < message.Length; i++)
+            {
+                Console.Write(message[i]);
+                Thread.Sleep(20);
+            }
+            Console.WriteLine();
+        }
+        public static int modulo(int x)
+        {
+            return (x % 26 + 26) % 26;
+        }
+
+        #endregion
     }
 }

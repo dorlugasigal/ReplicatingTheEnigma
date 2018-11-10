@@ -12,10 +12,9 @@ namespace Hw1
         private Dictionary<char, char> m_configuration;
 
         public Plugboard(string[] configurationCouples) : base()
-        {
-            
+        {       
             m_configuration = new Dictionary<char, char>();
-            foreach (var item in configurationCouples)
+            foreach (var item in configurationCouples) //adding the couples to the dictionary
             {
                 if (item.Length > 0)
                 {
@@ -27,11 +26,9 @@ namespace Hw1
 
         public string TranslateLetter(string givenMessage,Direction? dir)
         {
-            givenMessage = givenMessage.ToUpper();
+            givenMessage = givenMessage.ToUpper(); 
             var result = new string(givenMessage.Select(c => (m_configuration.Keys.Contains(c) ? m_configuration[c] : c)).ToArray());
             return result.ToString();
         }
-
-
     }
 }
