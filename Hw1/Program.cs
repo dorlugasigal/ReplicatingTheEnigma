@@ -32,6 +32,8 @@ namespace Hw1
 
         static void Main(string[] args)
         {
+            //LoopTask6();
+
             while (true)
             {
                 Menu();
@@ -317,7 +319,7 @@ namespace Hw1
             Console.WriteLine("Rotor " + rotorNum + " Created successfully");
             Console.WriteLine();
             return rt;
-        } 
+        }
 
         #endregion
 
@@ -386,6 +388,94 @@ namespace Hw1
         {
             Enigma enigma = new Enigma(m_rotorsList, m_reflector, m_plugboard);
             enigma.Start(0);
+        }
+        private static void LoopTask6()
+        {
+            for (int i = 0; i < 10000; i++)
+            {
+                //Console.WriteLine(i);
+                Reflector rrr = new Reflector();
+                //Console.WriteLine("rf");
+                Random rand = new Random();
+                StringBuilder ABC = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                StringBuilder plgConfig = new StringBuilder();
+                int amountOfCouples = rand.Next(11);
+                for (int J = 0; J < amountOfCouples; J++)
+                {
+                    int t1, t2;
+                    do
+                    {
+                        t1 = rand.Next(26);
+                        t2 = rand.Next(26);
+                    } while (t1 == t2 /*|| ABC[t1] == ABC[t2] */|| ABC[t1] == '-' || ABC[t2] == '-');
+                    plgConfig.Append(ABC[t1]).Append(ABC[t2]).Append(' ');
+                    //Console.WriteLine(ABC[t1].ToString() + ABC[t2].ToString());
+                    ABC[t1] = '-';
+                    ABC[t2] = '-';
+                }
+                Plugboard ppp = new Plugboard(plgConfig.ToString().Split(' '));
+                //Console.WriteLine("pp");
+                Rotor r1, r2, r3;
+                List<Rotor> rtli = new List<Rotor>();
+                string permutation;
+                int notch = -1, rotorNum;
+                List<int> numbers = new List<int>(new int[] { 1, 2, 3, 4, 5 });
+                for (int k = 0; k < 3; k++)
+                {
+                    do
+                    {
+                        rotorNum = rand.Next(5) + 1;
+
+                    } while (!numbers.Contains(rotorNum));
+                    numbers.Remove(rotorNum);
+                    switch (rotorNum)
+                    {
+                        case 1:
+                            permutation = ((RotorsPermutation)1).ToString();
+                            notch = 16;
+                            break;
+                        case 2:
+                            permutation = ((RotorsPermutation)2).ToString();
+                            notch = 4;
+                            break;
+                        case 3:
+                            permutation = ((RotorsPermutation)3).ToString();
+                            notch = 21;
+                            break;
+                        case 4:
+                            permutation = ((RotorsPermutation)4).ToString();
+                            notch = 9;
+                            break;
+                        case 5:
+                            permutation = ((RotorsPermutation)5).ToString();
+                            notch = 25;
+                            break;
+                        default:
+                            permutation = ((RotorsPermutation)1).ToString();
+                            break;
+                    }
+                    if (k == 0)
+                    {
+                        r1 = new Rotor(rand.Next(26), rand.Next(26), permutation, rotorNum, notch);
+                        rtli.Add(r1);
+                    }
+                    else if (k == 1)
+                    {
+                        r2 = new Rotor(rand.Next(26), rand.Next(26), permutation, rotorNum, notch);
+                        rtli.Add(r2);
+                    }
+                    else if (k == 2)
+                    {
+                        r3 = new Rotor(rand.Next(26), rand.Next(26), permutation, rotorNum, notch);
+                        rtli.Add(r3);
+                    }
+                }
+                Enigma en = new Enigma(rtli, rrr, ppp);
+                en.Start(3);
+                //Console.WriteLine(en.Start(2));
+                //Console.WriteLine();
+            }
+
         }
 
     }

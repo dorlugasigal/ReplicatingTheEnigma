@@ -11,7 +11,7 @@ namespace Hw1
         #region Properties
         private List<Rotor> m_rotorsList;
         private Reflector m_reflector;
-        private Plugboard m_plugboard; 
+        private Plugboard m_plugboard;
         #endregion
 
         public Enigma(List<Rotor> rotorsList, Reflector reflector, Plugboard plugboard)
@@ -143,7 +143,10 @@ namespace Hw1
                     x = "UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ";
                 }
             }
-            Console.Write("==>  ");
+            if (t5 != 3)
+            {
+                Console.Write("==>  ");
+            }
             for (int character = 0; character < x.Length; character++)
             {
                 if (x.ElementAt(character) == ' ')
