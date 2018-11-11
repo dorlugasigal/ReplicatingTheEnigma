@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -32,7 +33,7 @@ namespace Hw1
 
         static void Main(string[] args)
         {
-            //LoopTask6();
+           // LoopTask6();
 
             while (true)
             {
@@ -391,11 +392,11 @@ namespace Hw1
         }
         private static void LoopTask6()
         {
-            for (int i = 0; i < 10000; i++)
+            Stopwatch st = new Stopwatch();
+            st.Start();
+            for (int i = 0; i < 100000; i++)
             {
-                //Console.WriteLine(i);
                 Reflector rrr = new Reflector();
-                //Console.WriteLine("rf");
                 Random rand = new Random();
                 StringBuilder ABC = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
                 StringBuilder plgConfig = new StringBuilder();
@@ -475,6 +476,7 @@ namespace Hw1
                 //Console.WriteLine(en.Start(2));
                 //Console.WriteLine();
             }
+            Console.WriteLine(st.Elapsed);
 
         }
 

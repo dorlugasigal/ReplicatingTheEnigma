@@ -129,8 +129,7 @@ namespace Hw1
             if (t5 == 0)// not task 5
             {
                 Console.WriteLine("Enter a word to Encrypt: ");
-                x = Console.ReadLine();
-                x = x.ToUpper();
+                x = Helper.ReadSentence("Sentence to Translate");
             }
             else //task 5
             {
@@ -138,9 +137,13 @@ namespace Hw1
                 {
                     x = "MLD";
                 }
-                else
+                else if (t5 == 2)
                 {
                     x = "UMDPQ CUAQN LVVSP \nIARKC TTRJQ KCFPT OKRGO  \nZXALD RLPUH AUZSO SZFSU  \nGWFNF DZCUG VEXUU LQYXO  \nTCYRP SYGGZ HQMAG PZDKC  \nKGOJM MYYDD H ";
+                }
+                else
+                {
+                    x = "ENIGMA";
                 }
             }
             if (t5 != 3)

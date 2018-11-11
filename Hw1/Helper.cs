@@ -16,7 +16,7 @@ namespace Hw1
             Forward,
             Reverse
         }
-        private static string ABCD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        //private static string ABCD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private static Dictionary<int, char> ABC_Dictionary;
         public static Dictionary<int, char> getABC //singelton ABC
         {
@@ -25,9 +25,11 @@ namespace Hw1
                 if (ABC_Dictionary == null)
                 {
                     ABC_Dictionary = new Dictionary<int, char>();
-                    for (int i = 0; i < ABCD.Length; i++)
+
+                    for (char c = 'A'; c <= 'Z'; c++)
                     {
-                        ABC_Dictionary.Add(i, ABCD[i]);
+                        int key = c - 'A';
+                        ABC_Dictionary.Add(key, c);
                     }
                 }
                 return ABC_Dictionary;
@@ -47,9 +49,10 @@ namespace Hw1
                 if (ABCIndex_Dictionary == null)
                 {
                     ABCIndex_Dictionary = new Dictionary<char, int>();
-                    for (int i = 0; i < ABCD.Length; i++)
+                    for (char c = 'A'; c <= 'Z'; c++)
                     {
-                        ABCIndex_Dictionary.Add(ABCD[i], i);
+                        int key = c - 'A';
+                        ABCIndex_Dictionary.Add(c,key);
                     }
                 }
                 return ABCIndex_Dictionary;
@@ -88,6 +91,23 @@ namespace Hw1
                 else
                 {
                     return LetterToIndexConverter(read[0]);
+                }
+            }
+        }
+        public static string ReadSentence(string objective)
+        {
+            while (true)
+            {
+                Console.Write("==> ");
+                var read = Console.ReadLine().ToUpper();
+              
+                if (!Regex.IsMatch(read, @"^[A-Za-z ]+$"))
+                {
+                    Console.WriteLine(objective + " should be English words divided by space");
+                }
+                else
+                {
+                    return read;
                 }
             }
         }
